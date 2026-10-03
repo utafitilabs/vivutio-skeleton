@@ -36,8 +36,6 @@ jobs:
           --health-cmd "pg_isready -d app -U app"
           --health-interval 5s --health-timeout 5s --health-retries 10
 
-    env:
-      DATABASE_URL: 'postgresql://app:app@127.0.0.1:5432/app?serverVersion=17&charset=utf8'
 
     steps:
       - uses: actions/checkout@v4
@@ -64,6 +62,13 @@ jobs:
         # name, and --strict would call its absence an error.
         # https://getcomposer.org/doc/03-cli.md#validate
         run: composer validate --strict --no-check-publish
+
+      # Where an installer puts it, in .env.local: PHP's built-in server does
+      # not hand the job's environment to the application, so a variable set
+      # only there would reach the console steps and not the HTTP one.
+      - name: Point the installation at the database
+        working-directory: skeleton
+        run: echo 'DATABASE_URL="postgresql://app:app@127.0.0.1:5432/app?serverVersion=17&charset=utf8"' > .env.local
 
       - name: Install the core from its 0.1 line
         working-directory: skeleton
