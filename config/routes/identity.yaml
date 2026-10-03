@@ -1,0 +1,7 @@
+# The core's people screens: signing in and out, and the team.
+#
+# Who may reach them is not decided here: security.yaml puts everything behind
+# sign-in, and each page names the permission it checks.
+identity:
+    resource: '@IdentityBundle/Controller/'
+    type: attribute

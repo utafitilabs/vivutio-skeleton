@@ -1,0 +1,101 @@
+name: CI
+
+# The skeleton's promise is that an installation made from it boots, keeps
+# strangers out, and walks its install guide to a signed-in page.
+#
+# The core has no tag yet, so it is installed from its 0.1 line, checked out
+# beside this one. That is the fleet gate's head mode; the day the core is
+# tagged this becomes a plain `composer install`.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.4', '8.5']
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: app
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -d app -U app"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+
+    env:
+      DATABASE_URL: 'postgresql://app:app@127.0.0.1:5432/app?serverVersion=17&charset=utf8'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: skeleton
+
+      - uses: actions/checkout@v4
+        with:
+          repository: utafitilabs/vivutio
+          ref: '0.1'
+          path: vivutio
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ctype, iconv, pdo_pgsql
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer.json
+        working-directory: skeleton
+        # An installation is not a published package: create-project drops the
+        # name, and --strict would call its absence an error.
+        # https://getcomposer.org/doc/03-cli.md#validate
+        run: composer validate --strict --no-check-publish
+
+      - name: Install the core from its 0.1 line
+        working-directory: skeleton
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          composer config repositories.core '{"type":"path","url":"../vivutio","options":{"symlink":false}}'
+          composer require --no-interaction --no-progress "vivutio/vivutio:0.1.x-dev as 0.1.0"
+
+      - name: Code style and tests
+        working-directory: skeleton
+        run: composer check
+
+      # The install guide, as written, from step 3.
+      - name: Migrations, schema and the first administrator
+        working-directory: skeleton
+        run: |
+          php bin/console doctrine:migrations:migrate --no-interaction
+          php bin/console doctrine:schema:validate
+          php bin/console identity:user:create gate@example.test First Admin --tier=super-admin --password='a long enough passphrase' --no-interaction
+
+      - name: A signed-in page, over HTTP
+        working-directory: skeleton
+        run: |
+          php -S 127.0.0.1:8000 -t public >/tmp/server.log 2>&1 &
+          sleep 2
+          jar=$(mktemp)
+          token=$(curl -s -c "$jar" http://127.0.0.1:8000/login | grep -o 'name="_csrf_token" value="[^"]*"' | sed 's/.*value="//;s/"$//')
+          curl -s -b "$jar" -c "$jar" -o /dev/null -X POST http://127.0.0.1:8000/login \
+            --data-urlencode "_username=gate@example.test" \
+            --data-urlencode "_password=a long enough passphrase" \
+            --data-urlencode "_csrf_token=$token"
+          status=$(curl -s -b "$jar" -o /tmp/team.html -w '%{http_code}' http://127.0.0.1:8000/team)
+          test "$status" = 200 || { echo "the team list answered $status"; cat /tmp/server.log; exit 1; }
+          grep -q 'gate@example.test' /tmp/team.html

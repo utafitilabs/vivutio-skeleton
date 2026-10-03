@@ -1,0 +1,7 @@
+doctrine_migrations:
+    # Your own migrations, for your own entities. The core ships the versions
+    # that build its tables and registers them itself; `doctrine:migrations:diff`
+    # after migrating writes nothing for them.
+    migrations_paths:
+        'DoctrineMigrations': '%kernel.project_dir%/migrations'
+    enable_profiler: false

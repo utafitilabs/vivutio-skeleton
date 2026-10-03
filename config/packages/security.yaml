@@ -1,0 +1,64 @@
+# This installation's one rule: everything is behind sign-in, and the address a
+# stranger has to reach is named below. What a signed-in person may do is not
+# decided here: each page names the permission it checks, and the voters
+# decide it, per person and per record.
+#
+# https://symfony.com/doc/current/security.html
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    # The accounts, looked up by address, in lowercase, by the core.
+    providers:
+        identity_user_provider:
+            entity:
+                class: Vivutio\Bundle\IdentityBundle\Entity\User
+
+    firewalls:
+        # The development toolbar. No firewall, because asking a profiler page
+        # to sign in is how a debugging session ends.
+        dev:
+            pattern: ^/(_profiler|_wdt)/
+            security: false
+
+        main:
+            lazy: true
+            provider: identity_user_provider
+            # A deactivated account is refused at the door, with the reason.
+            user_checker: identity.user_checker
+
+            form_login:
+                login_path: identity_login
+                check_path: identity_login
+                enable_csrf: true
+                default_target_path: /
+
+            # Five attempts a minute: room for a mistyped passphrase, none for
+            # a list of them.
+            login_throttling:
+                max_attempts: 5
+
+            logout:
+                path: identity_logout
+                target: identity_login
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # one week
+
+    # Closed by default, and the first matching rule wins. The address a
+    # stranger must reach is named; the last line shuts everything else,
+    # including every page a module adds tomorrow.
+    access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            # Hashing is slow by design; the lowest cost keeps the suite fast.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10

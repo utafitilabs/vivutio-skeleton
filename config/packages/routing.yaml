@@ -1,0 +1,9 @@
+framework:
+    router:
+        # Where URLs are generated outside a request, in a console command.
+        default_uri: '%env(DEFAULT_URI)%'
+
+when@prod:
+    framework:
+        router:
+            strict_requirements: null

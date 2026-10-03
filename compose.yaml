@@ -1,0 +1,21 @@
+# The services an installation needs to run in development: PostgreSQL, and
+# nothing else. Production brings its own database.
+services:
+    database:
+        image: postgres:17-alpine
+        environment:
+            POSTGRES_DB: app
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: '!ChangeMe!'
+        ports:
+            - '5432:5432'
+        healthcheck:
+            test: ['CMD', 'pg_isready', '-d', 'app', '-U', 'app']
+            timeout: 5s
+            retries: 5
+            start_period: 60s
+        volumes:
+            - database_data:/var/lib/postgresql/data:rw
+
+volumes:
+    database_data:

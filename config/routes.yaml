@@ -1,0 +1,3 @@
+# Your own pages, declared with #[Route] beside the code that answers them.
+controllers:
+    resource: routing.controllers
