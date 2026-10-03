@@ -44,6 +44,7 @@ path from nothing to the first signed-in screen.
 |---|---|
 | `config/packages/security.yaml` | Everything behind sign-in, and the one address a stranger reaches |
 | `config/routes/identity.yaml` | Mounts the core's people screens |
+| `config/routes/shell.yaml` | Mounts the dashboard everybody lands on |
 | `config/bundles.php` | The core's bundles, enabled |
 | `src/` | Your own code; empty |
 | `compose.yaml` | PostgreSQL for development |
@@ -96,7 +97,8 @@ the passphrase. Make this first account a Super Admin.
 symfony serve
 ```
 
-Or any PHP server with `public/` as its root. Open `/login` and sign in.
+Or any PHP server with `public/` as its root. Open `/login` and sign in: you
+land on the organization's dashboard, empty until a module puts its cards there.
 
 ## What is behind sign-in
 

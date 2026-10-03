@@ -39,7 +39,7 @@ final class TheDoorIsClosedTest extends WebTestCase
     {
         $browser = self::createClient();
 
-        foreach (['/team', '/logout'] as $address) {
+        foreach (['/', '/me', '/team', '/logout'] as $address) {
             $browser->request('GET', $address);
             self::assertResponseRedirects('http://localhost/login', null, $address.' sends a stranger to sign in');
         }

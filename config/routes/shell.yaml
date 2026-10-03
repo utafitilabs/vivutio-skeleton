@@ -1,0 +1,5 @@
+# Where everybody lands: / is the organization's dashboard for whoever holds
+# dashboard.read, and their own for everybody else; /me is one's own.
+shell:
+    resource: '@ShellBundle/Controller/'
+    type: attribute

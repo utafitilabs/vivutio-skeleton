@@ -104,3 +104,6 @@ jobs:
           status=$(curl -s -b "$jar" -o /tmp/team.html -w '%{http_code}' http://127.0.0.1:8000/team)
           test "$status" = 200 || { echo "the team list answered $status"; cat /tmp/server.log; exit 1; }
           grep -q 'gate@example.test' /tmp/team.html
+          status=$(curl -s -b "$jar" -o /tmp/home.html -w '%{http_code}' http://127.0.0.1:8000/)
+          test "$status" = 200 || { echo "the dashboard answered $status"; exit 1; }
+          grep -q 'data-dashboard="organization"' /tmp/home.html

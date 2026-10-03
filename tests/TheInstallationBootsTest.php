@@ -58,6 +58,8 @@ final class TheInstallationBootsTest extends KernelTestCase
      */
     public static function mountedRoutes(): iterable
     {
+        yield 'the dashboard everybody lands on' => ['shell_dashboard', '/'];
+        yield 'one\'s own dashboard' => ['shell_my_dashboard', '/me'];
         yield 'signing in' => ['identity_login', '/login'];
         yield 'signing out' => ['identity_logout', '/logout'];
         yield 'the team' => ['identity_team', '/team'];
