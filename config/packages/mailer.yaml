@@ -1,0 +1,8 @@
+# Where mail goes, and who it comes from. The core sends a link to set a new
+# password and, with invitations, a link to join; until MAILER_DSN names a
+# transport, the pages that would send one say the installation cannot.
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+        headers:
+            From: '%env(MAILER_FROM)%'

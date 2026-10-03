@@ -19,6 +19,7 @@ installed with composer.
   - [3. Run the migrations](#3-run-the-migrations)
   - [4. Create the first administrator](#4-create-the-first-administrator)
   - [5. Serve it](#5-serve-it)
+  - [6. Let it send mail](#6-let-it-send-mail)
 - [What is behind sign-in](#what-is-behind-sign-in)
 - [Versions and branches](#versions-and-branches)
 - [How it is proven](#how-it-is-proven)
@@ -99,6 +100,18 @@ symfony serve
 
 Or any PHP server with `public/` as its root. Open `/login` and sign in: you
 land on the organization's dashboard, empty until a module puts its cards there.
+
+### 6. Let it send mail
+
+```bash
+# .env.local
+MAILER_DSN=smtp://user:pass@smtp.example.com:587
+MAILER_FROM="Your organization <no-reply@your-domain.example>"
+```
+
+A link to set a new password is sent by mail. Until `MAILER_DSN` names a
+transport the installation sends nothing, and the page for a forgotten
+password says so instead of promising an email.
 
 ## What is behind sign-in
 
