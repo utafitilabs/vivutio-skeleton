@@ -20,6 +20,7 @@ installed with composer.
   - [4. Create the first administrator](#4-create-the-first-administrator)
   - [5. Serve it](#5-serve-it)
   - [6. Let it send mail](#6-let-it-send-mail)
+- [Modules](#modules)
 - [What is behind sign-in](#what-is-behind-sign-in)
 - [Versions and branches](#versions-and-branches)
 - [How it is proven](#how-it-is-proven)
@@ -112,6 +113,19 @@ MAILER_FROM="Your organization <no-reply@your-domain.example>"
 A link to set a new password is sent by mail. Until `MAILER_DSN` names a
 transport the installation sends nothing, and the page for a forgotten
 password says so instead of promising an email.
+
+## Modules
+
+An installation adds the modules that apply to it. Each is one command, and its
+recipe, read from the endpoint in `composer.json`, registers the module and
+mounts its pages:
+
+| Module | For | Install |
+|---|---|---|
+| Properties | The camps, lodges and hotels you run | `composer require vivutio/property-module` |
+
+After installing a module, run the migrations again: a module adds tables of
+its own.
 
 ## What is behind sign-in
 

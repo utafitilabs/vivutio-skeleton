@@ -93,7 +93,11 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.1.*"
+            "require": "8.1.*",
+            "endpoint": [
+                "https://api.github.com/repos/utafitilabs/recipes/contents/index.json?ref=flex/main",
+                "flex://defaults"
+            ]
         }
     }
 }
