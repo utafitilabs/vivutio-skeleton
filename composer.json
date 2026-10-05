@@ -29,7 +29,7 @@
         "symfony/security-bundle": "8.1.*",
         "symfony/twig-bundle": "8.1.*",
         "symfony/yaml": "8.1.*",
-        "vivutio/vivutio": "^0.1"
+        "vivutio/vivutio": "^0.1.16"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",

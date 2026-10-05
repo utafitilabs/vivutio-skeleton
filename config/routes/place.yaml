@@ -1,0 +1,8 @@
+# The core's reference geography: the destinations tours go to, and the fees
+# charged at each.
+#
+# Who may reach them is not decided here: each page names the permission it
+# checks.
+place:
+    resource: '@PlaceBundle/Controller/'
+    type: attribute
