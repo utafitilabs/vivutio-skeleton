@@ -48,6 +48,7 @@ path from nothing to the first signed-in screen.
 | `config/routes/identity.yaml` | Mounts the core's people screens |
 | `config/routes/shell.yaml` | Mounts the dashboard everybody lands on |
 | `config/routes/place.yaml` | Mounts the destinations and their fees |
+| `config/routes/partner.yaml` | Mounts the partners |
 | `config/bundles.php` | The core's bundles, enabled |
 | `src/` | Your own code; empty |
 | `compose.yaml` | PostgreSQL for development |

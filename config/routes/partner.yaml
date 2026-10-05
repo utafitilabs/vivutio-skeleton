@@ -1,0 +1,7 @@
+# The core's partners: the organizations an installation trades with.
+#
+# Who may reach them is not decided here: each page names the permission it
+# checks.
+partner:
+    resource: '@PartnerBundle/Controller/'
+    type: attribute
