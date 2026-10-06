@@ -125,6 +125,9 @@ mounts its pages:
 | Module | For | Install |
 |---|---|---|
 | Properties | The camps, lodges and hotels you run | `composer require vivutio/property-module` |
+| Front desk | A place's arrivals, guests in house and departures | `composer require vivutio/front-desk-module` |
+| Touring | The tours you sell, day by day, and their park fees | `composer require vivutio/touring-module` |
+| Sourcing | Rooms requested from the camps you trade with | `composer require vivutio/sourcing-module` |
 
 After installing a module, run the migrations again: a module adds tables of
 its own.
