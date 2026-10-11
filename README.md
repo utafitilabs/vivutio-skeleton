@@ -20,6 +20,7 @@ installed with composer.
   - [4. Create the first administrator](#4-create-the-first-administrator)
   - [5. Serve it](#5-serve-it)
   - [6. Let it send mail](#6-let-it-send-mail)
+  - [7. Let it print PDFs](#7-let-it-print-pdfs)
 - [Modules](#modules)
 - [What is behind sign-in](#what-is-behind-sign-in)
 - [Versions and branches](#versions-and-branches)
@@ -115,6 +116,18 @@ MAILER_FROM="Your organization <no-reply@your-domain.example>"
 A link to set a new password is sent by mail. Until `MAILER_DSN` names a
 transport the installation sends nothing, and the page for a forgotten
 password says so instead of promising an email.
+
+### 7. Let it print PDFs
+
+```bash
+# .env.local
+PDF_BROWSER=/usr/bin/chromium
+```
+
+A document, such as a room request sent to a camp, is printed to a PDF by a
+headless Chrome or Chromium. Until `PDF_BROWSER` names one the installation
+prints nothing: the message goes without its document, and the record says
+so, instead of failing.
 
 ## Modules
 
