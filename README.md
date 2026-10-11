@@ -125,6 +125,7 @@ with its pack, one command for the modules it needs first:
 |---|---|---|
 | A supplier: camps, lodges or hotels | `composer require supplier` | Properties |
 | A tour operator | `composer require operator` | Touring, Sourcing |
+| A travel agency | `composer require agency` | Ticketing, Sourcing |
 
 A pack is unpacked as it installs: `composer.json` then requires each module by
 its own name and version, and every module is updated or removed on its own.
