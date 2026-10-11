@@ -118,9 +118,19 @@ password says so instead of promising an email.
 
 ## Modules
 
-An installation adds the modules that apply to it. Each is one command, and its
-recipe, read from the endpoint in `composer.json`, registers the module and
-mounts its pages:
+An installation adds the modules that apply to it. A kind of business starts
+with its pack, one command for the modules it needs first:
+
+| You are | Install | It adds |
+|---|---|---|
+| A supplier: camps, lodges or hotels | `composer require supplier` | Properties |
+| A tour operator | `composer require operator` | Touring, Sourcing |
+
+A pack is unpacked as it installs: `composer.json` then requires each module by
+its own name and version, and every module is updated or removed on its own.
+
+Any module is also one command of its own. Its recipe, read from the endpoint
+in `composer.json`, registers the module and mounts its pages:
 
 | Module | For | Install |
 |---|---|---|
